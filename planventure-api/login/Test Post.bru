@@ -1,0 +1,22 @@
+meta {
+  name: Test Post
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:5000/auth/login
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "test@email.com",
+    "password": "test1234"
+  }
+}
