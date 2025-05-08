@@ -7,7 +7,8 @@ from models.user import User
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
-init_db(app)
+db.init_db(app)
+migrate = Migrate(app, db)  # Initialize Flask-Migrate
 
 def reset_db():
     with app.app_context():

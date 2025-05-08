@@ -1,0 +1,29 @@
+meta {
+  name: Create Trip
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:5000/api/trips
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAZW1haWwuY29tIiwiZXhwIjoxNzQ2NjgzOTk5LCJpYXQiOjE3NDY1OTc1OTksInR5cGUiOiJhY2Nlc3MifQ.r6nhM9DaLz6nh-Y4Ort6iVmVn2cGlvY8pSqJ_pDz1jk
+}
+
+body:json {
+  {
+    "name": "Summer Vacation",
+    "destination": "Beach Resort",
+    "description": "Trip to the beach with friends",
+    "start_date": "2025-06-01",
+    "end_date": "2025-06-03"
+  }
+}

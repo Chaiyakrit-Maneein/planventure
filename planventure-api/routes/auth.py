@@ -3,22 +3,34 @@ from functools import wraps
 from database import db
 from flask import Blueprint, g, jsonify, request
 from models.user import User
+from utils.error_handlers import create_error_response
 
 auth_bp = Blueprint('auth', __name__)
 
 def auth_required(f):
     @wraps(f)
-    def decorated_function(*args, **kwargs):
+    def decorated(*args, **kwargs):
         auth_header = request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
-            return jsonify({'message': 'Missing or invalid Authorization header'}), 401
+            return jsonify(create_error_response(
+                "AUTH_001", 
+                "Missing or invalid authorization header", 
+                401
+            )), 401
+
         token = auth_header.split(' ')[1]
         user = User.verify_token(token)
+        
         if not user:
-            return jsonify({'message': 'Invalid or expired token'}), 401
+            return jsonify(create_error_response(
+                "AUTH_002", 
+                "Invalid or expired token", 
+                401
+            )), 401
+
         g.current_user = user
         return f(*args, **kwargs)
-    return decorated_function
+    return decorated
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
