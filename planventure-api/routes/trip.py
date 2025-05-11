@@ -58,7 +58,14 @@ def create_trip():
 @auth_required
 def get_trips():
     trips = Trip.query.filter_by(user_id=g.current_user.id).all()
-    trips_data = [{'id': t.id, 'name': t.name, 'description': t.description} for t in trips]
+    trips_data = [{
+        'id': t.id,
+        'name': t.name,
+        'description': t.description,
+        'destination': t.destination,
+        'start_date': t.start_date.strftime('%Y-%m-%d') if t.start_date else None,
+        'end_date': t.end_date.strftime('%Y-%m-%d') if t.end_date else None
+    } for t in trips]
     return jsonify({'trips': trips_data}), 200
 
 @trip_bp.route('/trips/<int:trip_id>', methods=['GET'])
@@ -67,7 +74,14 @@ def get_trip(trip_id):
     trip = Trip.query.filter_by(id=trip_id, user_id=g.current_user.id).first()
     if not trip:
         return jsonify({'error': 'Trip not found'}), 404
-    return jsonify({'trip': {'id': trip.id, 'name': trip.name, 'description': trip.description}}), 200
+    return jsonify({'trip': {
+        'id': trip.id,
+        'name': trip.name,
+        'description': trip.description,
+        'destination': trip.destination,
+        'start_date': trip.start_date.strftime('%Y-%m-%d') if trip.start_date else None,
+        'end_date': trip.end_date.strftime('%Y-%m-%d') if trip.end_date else None
+    }}), 200
 
 @trip_bp.route('/trips/<int:trip_id>', methods=['PUT'])
 @auth_required
